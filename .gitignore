@@ -1,0 +1,35 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.log
+db.sqlite3
+
+# Ambiente
+.env
+.venv/
+venv/
+
+# Django static/media de build e uploads
+staticfiles/
+media/
+
+# IDE/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Testes
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Node (se usar)
+node_modules/
+
+# Docker
+*.tar

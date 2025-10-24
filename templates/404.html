@@ -1,0 +1,9 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Página não encontrada{% endblock %}
+{% block content %}
+  <div class="text-center py-5">
+    <h1 class="display-6 mb-3">404 — Página não encontrada</h1>
+    <p class="text-secondary mb-4">A página que você procura pode ter sido removida ou está temporariamente indisponível.</p>
+    <a href="{% url 'dashboard:home' %}" class="btn btn-primary"><i class="bi bi-arrow-left"></i> Voltar ao início</a>
+  </div>
+{% endblock %}

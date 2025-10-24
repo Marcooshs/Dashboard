@@ -1,0 +1,107 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Início{% endblock %}
+
+{% block content %}
+  <!-- Page header -->
+  <section class="page-header card card-body border-0 shadow-sm mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+      <div>
+        <h1 class="h3 mb-1">Olá, {{ nome }} 👋</h1>
+        <p class="text-secondary mb-0">Aqui está um resumo das suas habilidades e projetos publicados.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="/admin/dashboard/skill/add/" class="btn btn-outline-primary"><i class="bi bi-plus-lg me-1"></i> Nova Skill</a>
+        <a href="/admin/dashboard/projeto/add/" class="btn btn-primary"><i class="bi bi-rocket-takeoff me-1"></i> Novo Projeto</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- KPIs simples (exemplo) -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card kpi-card h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <span class="text-secondary">Total de Skills</span>
+            <i class="bi bi-bar-chart"></i>
+          </div>
+          <h3 class="mb-0">{{ skills|length }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl-3">
+      <div class="card kpi-card h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <span class="text-secondary">Projetos</span>
+            <i class="bi bi-kanban"></i>
+          </div>
+          <h3 class="mb-0">{{ projetos|length }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills -->
+  <section class="mb-5">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h2 class="h5 mb-0">Habilidades</h2>
+      <a href="/admin/dashboard/skill/" class="btn btn-sm btn-outline-secondary">Gerenciar</a>
+    </div>
+
+    {% if skills %}
+      <div class="row g-3">
+        {% for skill in skills %}
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100 card-hover">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <strong>{{ skill.nome }}</strong>
+                  <span class="badge bg-primary-subtle text-primary">{{ skill.porcentagem }}%</span>
+                </div>
+                <div class="progress" role="progressbar" aria-label="{{ skill.nome }}" aria-valuenow="{{ skill.porcentagem }}" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar" style="width: {{ skill.porcentagem }}%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-warning">Nenhuma skill cadastrada ainda.</div>
+    {% endif %}
+  </section>
+
+  <!-- Projetos -->
+  <section>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h2 class="h5 mb-0">Projetos</h2>
+      <a href="/admin/dashboard/projeto/" class="btn btn-sm btn-outline-secondary">Gerenciar</a>
+    </div>
+
+    {% if projetos %}
+      <div class="row g-3">
+        {% for projeto in projetos %}
+          <div class="col-12 col-md-6 col-xl-4">
+            <div class="card h-100 card-hover">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                  <h3 class="h6 mb-0">{{ projeto.nome }}</h3>
+                  <span class="text-secondary small">{{ projeto.data_publicacao|date:"d/m/Y H:i" }}</span>
+                </div>
+                <p class="text-secondary mb-3 line-clamp-3">{{ projeto.descricao }}</p>
+                <div class="mt-auto">
+                  <a class="btn btn-outline-primary w-100" href="{{ projeto.link }}" target="_blank" rel="noopener nofollow">
+                    <i class="bi bi-box-arrow-up-right me-1"></i> Acessar
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info">Você ainda não publicou projetos.</div>
+    {% endif %}
+  </section>
+{% endblock %}

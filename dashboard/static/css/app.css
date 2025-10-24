@@ -1,0 +1,65 @@
+/* Branding rápido (altere a cor primária aqui se quiser) */
+:root {
+  --bs-primary: #4f46e5;   /* violeta elegante */
+  --card-radius: .75rem;   /* raio padrão de cartões */
+}
+
+/* Cabeçalho de página com leve gradiente */
+.page-header {
+  background: linear-gradient(180deg, rgba(79,70,229,.08), transparent);
+  border-radius: var(--card-radius);
+}
+
+/* Cartões e efeitos */
+.card,
+.kpi-card { border-radius: var(--card-radius); }
+
+.card-hover {
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 .5rem 1.25rem rgba(0,0,0,.06);
+}
+
+/* Utilitário para truncar texto em 3 linhas */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Dark mode refinements */
+:root[data-bs-theme="dark"] .page-header {
+  background: linear-gradient(180deg, rgba(79,70,229,.18), transparent);
+}
+
+/* ----------------------------------------------------------------------- */
+/* Avatar com iniciais (sem imagem)                                        */
+/* Use no HTML:  <span class="avatar">B</span>                              */
+/* ----------------------------------------------------------------------- */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .25);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .2px;
+  text-transform: uppercase;
+  user-select: none;
+}
+.navbar-dark .avatar {
+  background: rgba(255, 255, 255, .3);
+}
+
+/* Tamanhos opcionais */
+.avatar-sm { width: 24px; height: 24px; font-size: .75rem; }
+.avatar-lg { width: 40px; height: 40px; font-size: 1rem; }
+
+/* Miscelânea */
+.navbar .dropdown-menu { border-radius: .5rem; }

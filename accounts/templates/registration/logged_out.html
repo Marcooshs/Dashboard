@@ -1,0 +1,8 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Saiu da conta{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+  <h1 class="h5">Você saiu da sua conta.</h1>
+  <a class="btn btn-primary" href="{% url 'login' %}">Entrar novamente</a>
+</div>
+{% endblock %}

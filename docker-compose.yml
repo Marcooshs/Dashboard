@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dashboard_db
+      POSTGRES_USER: dashboard_user
+      POSTGRES_PASSWORD: dashboard1243
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '8000:8000'
+    env_file:
+      - .env
+    environment:
+      # Garante que o Django aponte para o serviço 'db' do compose
+      DB_HOST: db
+      DB_PORT: 5432
+      # Se quiser forçar dev:
+      DEBUG: 'True'
+      # Ajuste para evitar DisallowedHost no dev
+      ALLOWED_HOSTS: '127.0.0.1,localhost'
+      CSRF_TRUSTED_ORIGINS: 'http://127.0.0.1:8000,http://localhost:8000'
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+
+volumes:
+  pgdata:
+  static_volume:
+  media_volume:
