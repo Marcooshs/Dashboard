@@ -3,7 +3,7 @@ from .models import Skill, Projeto
 
 
 @admin.register(Skill)
-class SKILLAdmin(admin.ModelAdmin):
+class SkillAdmin(admin.ModelAdmin):
     list_display = ('nome', 'porcentagem')
     list_filter = ('porcentagem',)
     search_fields = ('nome',)
