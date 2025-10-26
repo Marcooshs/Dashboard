@@ -29,7 +29,7 @@ class ViewsTest(TestCase):
         resp = self.client.get(url)
         # Garante que a view fornece os dados esperados
         self.assertIn('skills', resp.context)
-        # Para ListView, o queryset vem como 'projetos'
+        # A Home usa TemplateView e preenche manualmente o contexto com 'projetos'
         self.assertIn('projetos', resp.context)
 
     def test_admin_login_abre(self):
