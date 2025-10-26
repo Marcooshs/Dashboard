@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
@@ -9,6 +10,9 @@ from dashboard.models import Projeto, Skill
 class ViewsTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        cls.user = get_user_model().objects.create_user(
+            username='testuser', password='password123'
+        )
         Skill.objects.create(nome='Python', porcentagem=95)
         Skill.objects.create(nome='Django', porcentagem=90)
         for i in range(3):
@@ -20,11 +24,13 @@ class ViewsTest(TestCase):
             )
 
     def test_home_status_200(self):
+        self.client.force_login(self.user)
         url = reverse('dashboard:home')
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
 
     def test_home_context(self):
+        self.client.force_login(self.user)
         url = reverse('dashboard:home')
         resp = self.client.get(url)
         # Garante que a view fornece os dados esperados
