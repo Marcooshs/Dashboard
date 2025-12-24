@@ -24,9 +24,9 @@ services:
       db:
         condition: service_healthy
     ports:
-      - '8000:8000'
+      - '9137:8000'
     env_file:
-      - .env
+      - .env.docker
     environment:
       # Garante que o Django aponte para o serviço 'db' do compose
       DB_HOST: db

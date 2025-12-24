@@ -10,6 +10,8 @@ db.sqlite3
 
 # Ambiente
 .env
+.env.*
+!.env.example
 .venv/
 venv/
 
@@ -22,14 +24,18 @@ media/
 .idea/
 .DS_Store
 Thumbs.db
+Desktop.ini
 
-# Testes
+# Testes / cobertura
 .coverage
 htmlcov/
 .pytest_cache/
+.tox/
+.mypy_cache/
 
 # Node (se usar)
 node_modules/
 
-# Docker
+# Docker / build
 *.tar
+*.pid
