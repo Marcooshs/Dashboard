@@ -1,45 +1,66 @@
-version: '3.9'
-
 services:
   db:
     image: postgres:17
     restart: unless-stopped
+    stop_grace_period: 60s
     environment:
-      POSTGRES_DB: dashboard_db
-      POSTGRES_USER: dashboard_user
-      POSTGRES_PASSWORD: dashboard1243
-    ports:
-      - '5432:5432'
+      POSTGRES_DB: ${DB_NAME:-dashboard_db}
+      POSTGRES_USER: ${DB_USER:-dashboard_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dashboard1243}
     volumes:
       - pgdata:/var/lib/postgresql/data
+
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h 127.0.0.1 || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 10
 
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
   web:
     build: .
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 30s
+
     depends_on:
       db:
         condition: service_healthy
+
     ports:
-      - '9137:8000'
+      - "${WEB_PORT:-9137}:8000"
+
     env_file:
       - .env.docker
+
     environment:
-      # Garante que o Django aponte para o serviço 'db' do compose
       DB_HOST: db
-      DB_PORT: 5432
-      # Se quiser forçar dev:
-      DEBUG: 'True'
-      # Ajuste para evitar DisallowedHost no dev
-      ALLOWED_HOSTS: '127.0.0.1,localhost'
-      CSRF_TRUSTED_ORIGINS: 'http://127.0.0.1:8000,http://localhost:8000'
+      DB_PORT: "5432"
+      DEBUG: "1"
+      ALLOWED_HOSTS: "127.0.0.1,localhost"
+      CSRF_TRUSTED_ORIGINS: "http://127.0.0.1:${WEB_PORT:-9137},http://localhost:${WEB_PORT:-9137}"
+
     volumes:
-      - .:/app
       - static_volume:/app/staticfiles
       - media_volume:/app/media
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8000/ >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 25s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   pgdata:
